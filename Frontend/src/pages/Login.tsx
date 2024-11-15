@@ -1,25 +1,64 @@
-import leftBgImage from "../assets/images/Frame 1165.png";
+import { useState } from "react";
+import leftBgImage from "../assets/images/image.jpg";
 import wallai from "../assets/images/filbbe 1.png";
 import line from "../assets/images/Frame 1145.png";
+import EyeOpenIcon from "../assets/icons/EyeOpenIcon";
+import EyeCloseIcon from "../assets/icons/EyeCloseIcon";
+import { useNavigate } from "react-router-dom";
 
-type Props = {};
+type Props = {}
 
-function Login({}: Props) {
+function Login({ }: Props) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username === "admin" && password === "admin") {
+      localStorage.setItem("loggedIn", "true");
+      navigate("/")
+
+    } else {
+      setError("Invalid username or password");
+    }
+  };
+
+  const navigate = useNavigate()
+
   return (
-    <div className="flex flex-col lg:flex-row h-screen">
-      {/* Left Image Section */}
-      <div className="lg:w-[67%] w-full h-1/3 lg:h-full">
-        <img
-          src={leftBgImage}
-          className="w-full h-full object-cover"
-          alt="Background Image"
-        />
+    <div className="flex h-[100vh]">
+      <div
+        className="w-[53%] py-9 bg-cover bg-center flex flex-col justify-between"
+        style={{
+          backgroundImage: `url(${leftBgImage})`,
+        }}
+      >
+        <div
+          className="ms-6 p-3 w-32 rounded-xl"
+          style={{
+            backdropFilter: "blur(2px)",
+            background: "linear-gradient(85.92deg, rgba(5, 5, 5, 0) 0.75%, rgba(0, 0, 0, 0.1) 99.25%)",
+          }}
+        >
+          <p className="text-white text-xl text-center">Walliea.ai</p>
+        </div>
+        <div className="flex justify-end text-end px-11 py-16">
+          <p className="text-white text-5xl font-extralight w-[85%] text-right">
+            Build a greener future with our sustainable plywood products.
+          </p>
+        </div>
       </div>
 
-      {/* Right Form Section */}
-      <div className="lg:w-3/5 w-full h-2/3 lg:h-full px-5 bg-white py-16 flex items-center justify-center">
+      <div className="w-[50%] h-[100vh] bg-white flex items-center justify-center">
         <form
-          className="p-5 rounded-3xl w-[90%]"
+          onSubmit={handleLogin}
+          className="px-5 py-8 rounded-3xl w-[90%]"
           style={{
             boxShadow: `
               0px 2px 5px 0px #69D33C1A,
@@ -42,26 +81,50 @@ function Login({}: Props) {
             <img src={wallai} alt="Logo" className="w-28 -mt-6" />
           </div>
           <img src={line} className="w-full object-cover" alt="Line Decoration" />
+
           <div className="mt-12 px-3">
-            <label className="block mb-2 text-[#333030] text-2xl font-medium">
+            <label className="block mb-2 text-[#333030] text-xl font-medium">
               Username
             </label>
             <input
               type="text"
               name="username"
               placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="border-[#B9B8B8] h-12 w-full text-lg border rounded-lg p-2 pl-4"
             />
-            <label className="block mb-2 mt-5 text-[#333030] text-2xl font-medium">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="border-[#B9B8B8] h-12 w-full text-lg border rounded-lg p-2 pl-4"
-            />
+
+            <div className="relative">
+              <label className="block mb-2 mt-5 text-[#333030] text-xl font-medium">
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border-[#B9B8B8] h-12 w-full text-lg border rounded-lg p-2 pl-4 pr-10"
+              />
+              <div className="absolute top-12 right-3 flex items-center">
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="focus:outline-none"
+                >
+                  {showPassword ? (
+                    <EyeOpenIcon color="#4B5C79" />
+                  ) : (
+                    <EyeCloseIcon color="#4B5C79" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {error && <p className="text-red-500 absolute mt-4">{error}</p>}
           </div>
+
           <div className="flex justify-center items-center mt-12">
             <button
               type="submit"
@@ -70,6 +133,7 @@ function Login({}: Props) {
               Login
             </button>
           </div>
+
           <p className="text-sm text-center text-[#A8A4A4] mt-9">
             Please review our Terms of Service and{" "}
             <span className="underline cursor-pointer text-[#555454]">
