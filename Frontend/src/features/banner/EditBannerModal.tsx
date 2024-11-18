@@ -5,6 +5,8 @@ import EditIcon from "../../assets/icons/EditIcon";
 import useApi from "../../hooks/useApi";
 import { endponits } from "../../services/apiEndpoints";
 import { BannerType } from "../../types/BannerType ";
+import { useBannerContext } from "../../context/BannerContext";
+import toast from "react-hot-toast";
 
 type Props = {
   page?: string;
@@ -18,6 +20,7 @@ interface InputData {
 }
 
 function EditBannerModal({ page, banner }: Props) {
+  const { updateBannerInState } = useBannerContext();
   const [inputData, setInputData] = useState<InputData>({
     title: "",
     image: "",
@@ -82,12 +85,15 @@ function EditBannerModal({ page, banner }: Props) {
       const url = `${endponits.UPDATE_BANNER}/${banner._id}`;
       const { response, error } = await updateBanner(url, inputData);
       if (!error && response) {
-        console.log("Banner updated successfully:", response.data);
+        toast.success(response.data.message || "Banner updated successfully!");
+        updateBannerInState(response.data.banner);
         closeModal();
       } else {
+        toast.error("Error updating banner.");
         console.error("Error updating banner:", error);
       }
     } catch (error) {
+      toast.error("Unexpected error occurred.");
       console.error("Error in handleSave:", error);
     }
   };

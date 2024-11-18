@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "../../assets/icons/SearchIcon"
 import UserIcon from "../../assets/icons/UserIcon"
+import { Toaster } from "react-hot-toast";
 
 type Props = {}
 
@@ -14,6 +15,7 @@ function Header({ }: Props) {
   return (
     <div className="px-8 py-4 border-b border-[#DADEE5] flex justify-between">
       <div className="relative w-[720px]">
+      <Toaster reverseOrder={false} />
         <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#A9AEB7]" />
         <input
           type="text"

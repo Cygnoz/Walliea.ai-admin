@@ -11,7 +11,7 @@ router.get("/getUser",RegisterController.getUser)
 //register the admin
 router.post("/register",LoginController.register)
 //login
-router.get("/login",LoginController.login)
+router.post("/login",LoginController.login)
 
 
 //banner

@@ -10,7 +10,7 @@ function Layout({ }: Props) {
       <SideBar />
       <div className="flex flex-col w-full h-full">
         <Header />
-        <div className="flex-grow p-7 flex">
+        <div className="flex-grow p-7 flex overflow-y-scroll">
           <Outlet />
         </div>
       </div>

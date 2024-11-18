@@ -1,35 +1,11 @@
-import { useEffect, useState } from "react";
 import BannerBottom from "../features/banner/BannerBottom";
 import BannerTop from "../features/banner/BannerTop";
-import useApi from "../hooks/useApi";
-import { endponits } from "../services/apiEndpoints";
+import { useBannerContext } from "../context/BannerContext";
 
 type Props = {};
 
 function Banner({}: Props) {
-  const { request: getAllBanners } = useApi("get");
-
-  const [banners, setBanners] = useState<any[]>([]);
-  console.log(banners);
-  
-
-  const fetchAllBanners = async () => {
-    try {
-      const url = `${endponits.GET_ALL_BANNER}`;
-      const { response, error } = await getAllBanners(url);
-      if (!error && response) {
-        setBanners(response.data.banners); 
-      } else {
-        console.error("Error in API response:", error);
-      }
-    } catch (error) {
-      console.error("Error fetching items:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchAllBanners();
-  }, []);
+  const { banners } = useBannerContext(); 
 
   return (
     <div className="w-full">

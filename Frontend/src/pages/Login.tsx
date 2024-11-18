@@ -5,29 +5,54 @@ import line from "../assets/images/Frame 1145.png";
 import EyeOpenIcon from "../assets/icons/EyeOpenIcon";
 import EyeCloseIcon from "../assets/icons/EyeCloseIcon";
 import { useNavigate } from "react-router-dom";
+import { endponits } from "../services/apiEndpoints";
+import useApi from "../hooks/useApi";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 type Props = {}
 
-function Login({ }: Props) {
+function Login({}: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const { request: CheckLogin } = useApi("post");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === "admin" && password === "admin") {
-      localStorage.setItem("loggedIn", "true");
-      navigate("/")
-
-    } else {
-      setError("Invalid username or password");
+    setIsLoading(true); 
+    setError("");
+  
+    try {
+      const response = await CheckLogin(endponits.LOGIN, { username, password }); 
+      if (response.response?.status == 200) {
+        toast.success("Logged in successfull!");
+        localStorage.setItem("loggedIn", "true");
+        navigate("/");
+      } else {
+        const errorMessage = response.response?.data.message || "Invalid username or password";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      } else {
+        setError("Login failed. Please try again.");
+        toast.error("Login failed. Please try again.");
+      }
+    } finally {
+      setIsLoading(false); 
     }
   };
+  
 
   const navigate = useNavigate()
 
@@ -130,7 +155,7 @@ function Login({ }: Props) {
               type="submit"
               className="mt-4 px-14 py-1.5 text-lg font-semibold rounded-[33px] bg-[#C6FFAC] text-[#1D5A00]"
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </div>
 
