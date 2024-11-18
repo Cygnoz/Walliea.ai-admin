@@ -33,9 +33,13 @@ function SideBar({ }: Props) {
   useEffect(() => {
     const savedIndex = localStorage.getItem("index");
     if (savedIndex !== null) {
-      setActiveIndex(Number(savedIndex));
+      const index = Number(savedIndex);
+      setActiveIndex(index);
+      if (index >= 0 && index < navlist.length) {
+        navigate(navlist[index].route);
+      }
     }
-  }, []);
+  }, [navigate]);
 
   // Function to handle item click
   const handleClick = (index: number, route: string) => {
@@ -45,7 +49,7 @@ function SideBar({ }: Props) {
   };
 
   return (
-    <aside className="bg-[#0E371A] h-[100vh] w-[9.625rem]  text-white">
+    <aside className="bg-[#0E371A] h-[100vh] w-[9.625rem] text-white">
       {/* Logo */}
       <div className="cursor-pointer mb-5 p-8">
         <img src={wallai} alt="Logo" />
@@ -67,7 +71,7 @@ function SideBar({ }: Props) {
             }
           >
             {activeIndex === index && (
-              <div className="absolute left-0 -top-1  w-1.5 h-[42px] bg-[#D8E431] rounded-r-md"></div>
+              <div className="absolute left-0 -top-1 w-1.5 h-[42px] bg-[#D8E431] rounded-r-md"></div>
             )}
             <div className="ms-2">{item.icon}</div>
             <span className="text-[0.8125rem]">{item.nav}</span>
