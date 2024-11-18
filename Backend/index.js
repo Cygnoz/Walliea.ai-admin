@@ -8,7 +8,7 @@ require('./db/connection'); // Ensure the path to your MongoDB connection is cor
 
 const routes = require('./routes/router')
 app.use(cors())
-app.use(express.json());
+app.use(express.json()); 
 
 // Increase payload limit
 app.use(bodyParser.json({ limit: '6mb' })); // Increase limit for JSON payload
