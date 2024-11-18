@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config();
 require('./db/connection'); // Ensure the path to your MongoDB connection is correct
@@ -8,6 +9,10 @@ require('./db/connection'); // Ensure the path to your MongoDB connection is cor
 const routes = require('./routes/router')
 app.use(cors())
 app.use(express.json());
+
+// Increase payload limit
+app.use(bodyParser.json({ limit: '6mb' })); // Increase limit for JSON payload
+app.use(bodyParser.urlencoded({ limit: '6mb', extended: true })); // Increase limit for URL-encoded payloads
 
 app.use('/api', routes); 
 // Test route
