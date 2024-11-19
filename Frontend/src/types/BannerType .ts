@@ -3,6 +3,7 @@ export type BannerType = {
     title: string;
     image: string;
     url: string;
+    subtitle:string;
     __v: number;
   };
   

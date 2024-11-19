@@ -25,7 +25,8 @@ function Contact() {
       const url = `${endponits.GET_ALL_CONTACTS}`;
       const { response, error } = await getAllContacts(url);
       if (!error && response) {
-        setContacts(response.data);
+        // Reverse contacts here to ensure newest is first
+        setContacts(response.data.reverse());
       } else {
         console.error("Error in API response:", error);
       }
@@ -49,12 +50,14 @@ function Contact() {
     );
   });
 
+  // Paginate filtered data
   const totalPages = Math.ceil(filteredContacts.length / rowsPerPage);
   const paginatedData = filteredContacts.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
 
+  // Reset to first page when search value changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchValue]);
@@ -97,7 +100,7 @@ function Contact() {
               <tr style={{ backgroundColor: "#F0FDF0" }}>
                 {tableHeaders.map((heading, index) => (
                   <th
-                    className="py-3 px-4 font-medium border-b text-[#495160]  text-xs border-[#EAECF0]"
+                    className="py-3 px-4 font-medium border-b text-[#495160] text-xs border-[#EAECF0]"
                     key={index}
                   >
                     {heading}

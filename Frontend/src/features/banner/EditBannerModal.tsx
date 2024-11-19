@@ -17,6 +17,7 @@ interface InputData {
   title: string;
   image: string;
   url: string;
+  subtitle:string;
 }
 
 function EditBannerModal({ page, banner }: Props) {
@@ -25,6 +26,7 @@ function EditBannerModal({ page, banner }: Props) {
     title: "",
     image: "",
     url: "",
+    subtitle:"",
   });
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -37,6 +39,7 @@ function EditBannerModal({ page, banner }: Props) {
         title: banner.title || "",
         image: banner.image || "",
         url: banner.url || "",
+        subtitle: banner.subtitle || "",
       });
     }
   }, [isModalOpen, banner]);
@@ -77,6 +80,7 @@ function EditBannerModal({ page, banner }: Props) {
       title: "",
       image: "",
       url: "",
+      subtitle:"",
     });
   };
 
@@ -126,7 +130,7 @@ function EditBannerModal({ page, banner }: Props) {
           </div>
         </div>
         <div>
-          <div className="mt-7">
+          <div className="mt-6">
             <label className="block text-sm mb-2 text-textColor">Title</label>
             <input
               value={inputData.title}
@@ -137,7 +141,7 @@ function EditBannerModal({ page, banner }: Props) {
               className=" border-[#CECECE] w-full text-sm border rounded p-2 pl-4"
             />
           </div>
-          <div className="mt-7">
+          <div className="mt-5">
             <label className="block text-sm mb-4 text-textColor">
               Upload Image
             </label>
@@ -178,7 +182,19 @@ function EditBannerModal({ page, banner }: Props) {
             </div>
           </div>
 
-          <div className="mt-7">
+          <div className="mt-5">
+            <label className="block text-sm mb-2 text-textColor">Sub Title</label>
+            <input
+              value={inputData.subtitle}
+              onChange={handleInputChange}
+              type="text"
+              name="subtitle"
+              placeholder="Terms & Condition Apply"
+              className=" border-[#CECECE] w-full text-sm border rounded p-2 pl-4"
+            />
+          </div>
+
+          <div className="mt-4">
             <label className="block text-sm mb-2 text-textColor">URL</label>
             <input
               value={inputData.url}
