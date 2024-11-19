@@ -3,8 +3,8 @@ const Banner = require('../model/bannerSchema');
 // Function to create a new banner
 const createBanner = async (req, res) => {
     try {
-        const { title, image, url } = req.body;
-        const newBanner = new Banner({ title, image, url });
+        const { title, subtitle, image, url } = req.body;
+        const newBanner = new Banner({ title, subtitle, image, url });
         await newBanner.save();
         res.status(201).json({ message: 'Banner created successfully', banner: newBanner });
     } catch (err) {
@@ -24,8 +24,8 @@ const getAllBanners = async (req, res) => {
 const editBanner = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, image, url } = req.body;
-        const updatedBanner = await Banner.findByIdAndUpdate(id, { title, image, url }, { new: true });
+        const { title,subtitle, image, url } = req.body;
+        const updatedBanner = await Banner.findByIdAndUpdate(id, { title,subtitle, image, url }, { new: true });
         if (!updatedBanner) {
             return res.status(404).json({ message: 'Banner not found' });
         }
