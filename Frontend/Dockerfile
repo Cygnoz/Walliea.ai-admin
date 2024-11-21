@@ -10,10 +10,11 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Clear npm cache and use specific registry with increased timeout
-RUN npm cache clean --force && \
-    npm config set registry https://registry.npmjs.org/ && \
-    npm install --network-timeout 600000 --legacy-peer-deps
+# Clear npm cache and install dependencies with retry mechanism
+RUN npm config set registry https://registry.npmjs.org/ && \
+    npm install --legacy-peer-deps || \
+    (sleep 5 && npm install --legacy-peer-deps) || \
+    (sleep 10 && npm install --legacy-peer-deps)
 
 # Copy the rest of the application code
 COPY . .
