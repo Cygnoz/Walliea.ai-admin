@@ -20,7 +20,9 @@ const createHeaders = (
   return headers;
 };
 //const baseURL="http://localhost:4000"
-const baseURL: string ='http://13.232.79.148:4000'
+//const baseURL: string ='http://13.232.79.148:4000'
+const baseURL: string = 'https://www.walliea.ai:4000';
+
 // Create base instance
 const baseInstance = (): AxiosInstance => {
   const API_URL = baseURL;
