@@ -11,8 +11,7 @@ function Banner({}: Props) {
     <div className="w-full">
       <p className="text-[#303F58] text-xl font-bold">Banner</p>
       <p className="text-[#818182] text-sm">
-        A manual journal is a handwritten ledger entry for recording financial transactions,
-        typically for adjustments not processed automatically.
+        A banner is a visual element used to display key information or promotional content prominently on a webpage or application.
       </p>
       {banners.length > 0 && <BannerTop banner={banners[0]} />}
       {banners.length > 1 && <BannerBottom banner={banners[1]} />}
