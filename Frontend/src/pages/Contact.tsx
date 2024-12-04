@@ -74,8 +74,7 @@ function Contact() {
     <div className="w-full">
       <p className="text-[#303F58] text-xl font-bold">Contact</p>
       <p className="text-[#818182] text-sm">
-        A manual journal is a handwritten ledger entry for recording financial
-        transactions, typically for adjustments not processed automatically
+        A contact is a recorded individual or organization with essential details for communication and interaction.
       </p>
 
       <div className="mt-4 p-4 bg-white">
