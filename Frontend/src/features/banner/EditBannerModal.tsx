@@ -118,8 +118,7 @@ function EditBannerModal({ page, banner }: Props) {
               {page === "bannerTop" ? "Edit Banner Top" : "Edit Banner Bottom"}
             </p>
             <p className="text-[#818182] text-sm">
-              A manual journal is a handwritten ledger entry for recording
-              financial transactions.
+            Customize titles, images, and subtitles effortlessly with just a few clicks.
             </p>
           </div>
           <div
