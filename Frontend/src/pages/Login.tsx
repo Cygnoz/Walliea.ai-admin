@@ -22,20 +22,15 @@ function Login({}: Props) {
     setShowPassword(!showPassword);
   };
   const { request: CheckLogin } = useApi("post");
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
   
     try {
-      // Encrypt only the password
-      const encryptedPassword = CryptoJS.AES.encrypt(
-        password,
-        "your-secret-key"
-      ).toString();
+      const secretKey = import.meta.env.VITE_SECRET_KEY || ""; 
+      const encryptedPassword = CryptoJS.AES.encrypt(password, secretKey).toString();
   
-      // Create the payload with plain text username and encrypted password
       const payload = {
         username,
         password: encryptedPassword,
@@ -66,6 +61,7 @@ function Login({}: Props) {
       setIsLoading(false);
     }
   };
+  
   
   const navigate = useNavigate()
 

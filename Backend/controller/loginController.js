@@ -1,6 +1,7 @@
-const Login = require('../model/loginSchema')
+const Login = require('../model/loginSchema');
 const bcrypt = require('bcrypt');
 const CryptoJS = require('crypto-js');
+require('dotenv').config(); 
 
 const register = async (req, res) => {
     try {
@@ -9,23 +10,21 @@ const register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await Login.create({ username, password: hashedPassword });
         res.status(201).json({ user });
-        } catch (err) {
+    } catch (err) {
         res.status(500).send(err);
     }
-}
+};
 
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log(req.body);
-        
         const user = await Login.findOne({ username }).lean();
         if (!user) {
             return res.status(400).json({ message: "Invalid username or password" });
         }
 
-        // Decrypt the password
-        const bytes = CryptoJS.AES.decrypt(password, 'your-secret-key');
+        const secretKey = process.env.SECRET_KEY;
+        const bytes = CryptoJS.AES.decrypt(password, secretKey);
         const decryptedPassword = bytes.toString(CryptoJS.enc.Utf8);
 
         // Compare the decrypted password with the stored hashed password
@@ -43,4 +42,4 @@ const login = async (req, res) => {
 module.exports = {
     register,
     login,
-}
+};
