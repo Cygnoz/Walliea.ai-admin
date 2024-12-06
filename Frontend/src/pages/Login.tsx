@@ -9,7 +9,7 @@ import { endponits } from "../services/apiEndpoints";
 import useApi from "../hooks/useApi";
 import toast from "react-hot-toast";
 import axios from "axios";
-
+import CryptoJS from "crypto-js";
 type Props = {}
 
 function Login({}: Props) {
@@ -25,23 +25,37 @@ function Login({}: Props) {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true); 
+    setIsLoading(true);
     setError("");
   
     try {
-      const response = await CheckLogin(endponits.LOGIN, { username, password }); 
-      if (response.response?.status == 200) {
-        toast.success("Logged in successfull!");
+      // Encrypt only the password
+      const encryptedPassword = CryptoJS.AES.encrypt(
+        password,
+        "your-secret-key"
+      ).toString();
+  
+      // Create the payload with plain text username and encrypted password
+      const payload = {
+        username,
+        password: encryptedPassword,
+      };
+  
+      const response = await CheckLogin(endponits.LOGIN, payload);
+      if (response.response?.status === 200) {
+        toast.success("Logged in successfully!");
         localStorage.setItem("loggedIn", "true");
         navigate("/");
       } else {
-        const errorMessage = response.response?.data.message || "Invalid username or password";
+        const errorMessage =
+          response.response?.data.message || "Invalid username or password";
         setError(errorMessage);
         toast.error(errorMessage);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+        const errorMessage =
+          error.response?.data?.message || "Login failed. Please try again.";
         setError(errorMessage);
         toast.error(errorMessage);
       } else {
@@ -49,11 +63,10 @@ function Login({}: Props) {
         toast.error("Login failed. Please try again.");
       }
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
   
-
   const navigate = useNavigate()
 
   return (
