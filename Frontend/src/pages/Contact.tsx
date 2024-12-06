@@ -25,8 +25,17 @@ function Contact() {
       const url = `${endponits.GET_ALL_CONTACTS}`;
       const { response, error } = await getAllContacts(url);
       if (!error && response) {
-        // Reverse contacts here to ensure newest is first
-        setContacts(response.data.reverse());
+        const uniqueContacts = response.data.reduce((acc: ContactData[], contact: ContactData) => {
+          const isDuplicate = acc.some(
+            (item) =>
+              item.email === contact.email || item.phone_no === contact.phone_no
+          );
+          if (!isDuplicate) {
+            acc.push(contact);
+          }
+          return acc;
+        }, []);
+        setContacts(uniqueContacts.reverse());
       } else {
         console.error("Error in API response:", error);
       }
@@ -34,7 +43,7 @@ function Contact() {
       console.error("Error fetching contacts:", error);
     }
   };
-
+  
   useEffect(() => {
     fetchAllContacts();
   }, []);
@@ -72,7 +81,7 @@ function Contact() {
 
   return (
     <div className="w-full">
-      <p className="text-[#303F58] text-xl font-bold">Contact</p>
+      <p className="text-[#303F58] text-xl font-bold">Contacts</p>
       <p className="text-[#818182] text-sm">
         A contact is a recorded individual or organization with essential details for communication and interaction.
       </p>
@@ -96,10 +105,10 @@ function Contact() {
         >
           <table className="min-w-full bg-white">
             <thead className="text-[12px] text-center text-dropdownText">
-              <tr style={{ backgroundColor: "#F0FDF0" }}>
+              <tr className="bg-[#F0FDF0]">
                 {tableHeaders.map((heading, index) => (
                   <th
-                    className="py-3 px-4 font-medium border-b text-[#495160] text-xs border-[#EAECF0]"
+                    className="py-3 px-4 font-medium border-b text-[#000000] text-xs border-[#EAECF0]"
                     key={index}
                   >
                     {heading}
@@ -107,10 +116,10 @@ function Contact() {
                 ))}
               </tr>
             </thead>
-            <tbody className="text-dropdownText text-center text-[13px]">
+            <tbody className="text-dropdownText text-center font-medium text-[13px]">
               {paginatedData.length > 0 ? (
                 paginatedData.map((item, index) => (
-                  <tr key={item._id} className="text-[#4B5C79] text-sm">
+                  <tr key={item._id} className="text-[#121212] text-sm">
                     <td className="py-3 px-4 border-y border-[#EAECF0]">
                       {(currentPage - 1) * rowsPerPage + index + 1}
                     </td>
